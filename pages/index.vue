@@ -1,13 +1,85 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page>
+  <div>
+    <div class="row justify-center">
+      <img src="~assets/telaInicio.png">
+    </div>
+  </div>
+  <div class=" q-mt-md">
+    <div class="row justify-center">
+      <q-icon name="place"
+        style="font-size: 35px" color="red"/>
+    </div>
+    <div class="row justify-center">
+      <span>
+      Você está a {{this.km}} m desta loja
+      </span>
+    </div>
+    <div class="row justify-center text-weight-bold">
+      <span style="size: 50px;">{{this.indentificacao}}</span>
+    </div>
+    <div class="row q-mt-md justify-center">
+     <q-btn
+      color="negative"
+      size="lg">
+      Trocar Loja
+     </q-btn>
+    </div>
+    <div class="row justify-center q-mt-md">
+      {{this.logradouro}}
+    </div>
+    <div class="row justify-center">
+      {{this.bairro}}
+    </div>
+    <div class="row justify-center text-weight-bold q-mt-md">
+      {{this.telefone}}
+    </div>
+  </div>
+  <div class="fundoCinza q-mt-sm">
+    <div class="row text-center">
+      <div class="col-3 q-mt-lg">
+        <q-btn
+          round
+          icon="fab fa-internet-explorer"
+          size="lg"
+          />
+      </div>
+      <div class="col-3 q-mt-lg">
+        <q-btn
+          round
+          icon="fab fa-facebook"
+          size="lg"/>
+      </div>
+      <div class="col-3 q-mt-lg">
+        <q-btn
+          round
+          icon="fab fa-instagram"
+          size="lg"/>
+      </div>
+      <div class="col-3 q-mt-lg">
+        <q-btn
+          round
+          icon="fab fa-twitter"
+          size="lg"/>
+      </div>
+    </div>
+  </div>
   </q-page>
 </template>
-
 <style>
 </style>
 
 <script>
 export default {
-  name: 'PageIndex'
+  name: 'PageIndex',
+  data () {
+    return {
+      km: '14,6',
+      logradouro: 'Rua dos Caetés, 499',
+      bairro: 'Centro - BELO HORIZONTE',
+      telefone: '(31) 3514-0871',
+      indentificacao: '50 - Caetés'
+    }
+  }
 }
 </script>

@@ -17,7 +17,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          Clube Lojas REDE
+              Clube Lojas REDE
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
@@ -28,24 +28,27 @@
     >
       <q-list
         no-border
-        link
-        inset-delimiter
+        highlight
       >
-        <q-list-header>
-          MENU
-        </q-list-header>
-        <hr>
          <q-item to="/menu">
-          <q-item-side icon="home" />
+          <q-item-side icon="fas fa-home" />
           <q-item-main label="Inicio" sublabel="Página inicial" />
         </q-item>
         <q-item to="/profile">
-          <q-item-side icon="account_circle" />
+          <q-item-side icon="fas fa-user-alt" />
           <q-item-main label="Perfil" sublabel="Meus dados" />
         </q-item>
+        <q-item to="/ofertas">
+          <q-item-side icon="fas fa-credit-card" />
+          <q-item-main label="Ofertas" sublabel="Ofertas" />
+        </q-item>
+        <q-item to="/site">
+          <q-item-side icon="fab fa-internet-explorer"/>
+          <q-item-main label="Site" sublabel="www.lojasrede.com.br" />
+        </q-item>
         <q-item to="/">
-          <q-item-side icon="arrow_back_ios"/>
-          <q-item-main label="Sair" sublabel="Sair" />
+          <q-item-side icon="fas fa-arrow-left"/>
+          <q-item-main label="Sair" sublabel="Login" />
         </q-item>
       </q-list>
     </q-layout-drawer>
@@ -56,9 +59,19 @@
     <q-layout-footer>
       <q-tabs color="negative">
         <q-route-tab
+        icon="fas fa-cart-plus"
+        to="/cart"
+        exact
+        slot="title"/>
+        <q-route-tab
+        icon="far fa-heart"
+        to="/favorite"
+        exact
+        slot="title"/>
+        <q-route-tab
         icon="account_circle"
         to="/profile"
-         exact
+        exact
         slot="title"/>
       <q-route-tab
         icon="not_listed_location"

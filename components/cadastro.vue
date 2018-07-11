@@ -1,141 +1,127 @@
 <template>
-  <div class="q-ma-md q-mt-xl">
-    <q-btn
-      v-go-back="'/'"
-      flat
-      color="red">
+  <div class="q-ma-xl">
       <q-icon
         v-go-back=" '/'"
-        name="arrow_back_ios"
-        /> Voltar
-    </q-btn>
+        name="fas fa-arrow-left"
+        />
+  <form>
+  <q-card class="q-mt-md">
+      <q-card-title>
+        Dados Pessoais
+      </q-card-title>
+      <q-card-main>
+        <q-input
+          v-model="cliente.cpf"
+          float-label="Cpf"
+          @blur="$v.cliente.cpf.$touch"
+          @keyup.enter="submit" :error="$v.cliente.cpf.$error"
+          :before="[{icon: 'credit_card', handler () {}}]" />
 
-    <q-input
-      v-model="pessoa.cpf"
-      float-label="Cpf"
-      @blur="$v.pessoa.cpf.$touch"
-      @keyup.enter="submit" :error="$v.pessoa.cpf.$error"
-      :before="[{icon: 'credit_card', handler () {}}]" />
+        <q-input
+          v-model="cliente.nomeCompleto"
+          float-label="Nome Completo"
+          @blur="$v.cliente.nomeCompleto.$touch"
+          @keyup.enter="submit" :error="$v.cliente.nomeCompleto.$error"
+          :before="[{icon: 'person_pin', handler () {}}]" />
 
-    <q-input
-      v-model="pessoa.nome"
-      float-label="Nome Completo"
-      @blur="$v.pessoa.nome.$touch"
-      @keyup.enter="submit" :error="$v.pessoa.nome.$error"
-      :before="[{icon: 'person_pin', handler () {}}]" />
+        <q-input
+          v-model="cliente.email"
+          float-label="E-mail"
+          @blur="$v.cliente.email.$touch"
+          @keyup.enter="submit" :error="$v.cliente.email.$error"
+          :before="[{icon: 'mail', handler () {}}]"/>
+      </q-card-main>
+  </q-card>
+    <q-card class="q-mt-md">
+      <q-card-title>
+        Endereço
+      </q-card-title>
+      <q-card-main>
+         <q-input
+          type="text"
+          v-model="cliente.cep"
+          float-label="Cep"
+          @blur="buscarCep"/>
 
-    <q-input
-      v-model="pessoa.email"
-      float-label="E-mail"
-      @blur="$v.pessoa.email.$touch"
-      @keyup.enter="submit" :error="$v.pessoa.email.$error"
-      :before="[{icon: 'mail', handler () {}}]"/>
+        <q-input
+          v-model="cliente.logradouro"
+          float-label="Rua"/>
 
-    <q-input
-      type="password"
-      v-model="pessoa.senha"
-      float-label="Senha"
-      :after="[{icon: 'done', condition: pessoa.senha.length >= 5, handler () {}}]"
-      :before="[{icon: 'fas fa-key', handler () {}}]"/>
+        <q-input
+          v-model="cliente.uf"
+          float-label="Estado"/>
 
-    <q-input
-      v-model="pessoa.confirmSenha"
-      type="password"
-      float-label="Confirme Senha"
-      :after="[{icon: 'done', condition: pessoa.confirmSenha.length >= 5, handler () {}}]"
-      :before="[{icon: 'fas fa-key', handler () {}}]"
-      @blur="$v.pessoa.confirmSenha.$touch"
-      :error="$v.pessoa.confirmSenha.$error"
-      />
+        <q-input
+          v-model="cliente.localidade"
+          float-label="Cidade"/>
 
-  <q-field icon="place" class="q-mt-sm">
-    <q-input
-      type="number"
-      v-model="pessoa.endereco.cep"
-      float-label="Cep"
-      @blur="buscarCep"/>
-
-    <q-input
-      v-model="pessoa.endereco.logradouro"
-      float-label="Rua"/>
-
-    <q-input
-      v-model="pessoa.endereco.cidade"
-      float-label="Cidade"/>
-
-    <q-input
-      v-model="pessoa.endereco.estado_info.nome"
-      float-label="Estado"/>
-  </q-field>
-
+        <q-input
+          v-model="cliente.bairro"
+          float-label="Bairro"/>
+      </q-card-main>
+    </q-card>
   <q-btn
-    color="negative"
-    @click="submit"
-    class="q-mt-sm float-right">Salvar
+    color="primary"
+    class="q-mt-sm fit"
+    @click="submit">Salvar
   </q-btn>
+ </form>
 </div>
 
 </template>
 <script>
 import axios from 'axios'
-import { required, email, sameAs, minLength } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 export default {
   name: 'CreateCadastro',
   data () {
     return {
-      pessoa: {
-        nome: '',
+      cliente: {
+        nomeCompleto: '',
         cpf: '',
         email: '',
-        senha: '',
-        confirmSenha: '',
-        endereco: {
-          cep: '',
-          logradouro: '',
-          cidade: '',
-          estado_info: {
-            nome: ''
-          }
-        }
+        cep: '',
+        logradouro: '',
+        localidade: '',
+        bairro: '',
+        uf: ''
       }
     }
   },
   validations: {
-    pessoa: {
+    cliente: {
       email: { required, email },
-      nome: { required },
-      cpf: { required },
-      senha: { required, minLength: minLength(6) },
-      confirmSenha: { sameAsPassword: sameAs('senha') }
+      nomeCompleto: { required },
+      cpf: { required }
     }
   },
   methods: {
     buscarCep: function () {
-      axios.get(`https://api.postmon.com.br/v1/cep/${this.pessoa.endereco.cep}`)
+      axios.get(`http://viacep.com.br/ws/${this.cliente.cep}/json/`)
         .then(response => {
-          this.pessoa.endereco = response.data
+          this.cliente = response.data
         })
         .catch(function (error) {
           console.log(error)
         })
     },
     submit: function () {
-      this.$v.pessoa.$touch()
-      if (this.$v.pessoa.$error) {
+      this.$v.cliente.$touch()
+      if (this.$v.cliente.$error) {
         this.$q.notify({
           message: 'Por favor, preencha corretamente os campos!',
           icon: 'fas fa-exclamation-triangle',
           position: 'top'
         })
       } else {
-        // axios.post('', this.pessoa)
-        // .then(response => {
-        //   this.pessoa.endereco = response.data
-        // })
-        // .catch(function (error) {
-        //   console.log(error)
-        // })
-        this.$router.push('/')
+        axios.post('http://localhost:62748/api/cliente', this.cliente)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+        //  this.$router.push('/')
       }
     }
   }

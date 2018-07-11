@@ -6,7 +6,10 @@ export default [
     children: [
       { path: '', component: () => import('pages/index') },
       { path: '/profile', component: () => import('pages/profile') },
-      { path: '/local', component: () => import('pages/locale') }
+      { path: '/local', component: () => import('pages/locale') },
+      { path: '/site', component: () => import('pages/site') },
+      { path: '/favorite', component: () => import('pages/favorite') },
+      { path: '/cart', component: () => import('pages/cart') }
     ]
   },
   {
@@ -14,7 +17,7 @@ export default [
     component: () => import('pages/404')
   },
   {
-    path: '',
+    path: '/',
     component: () => import('pages/login')
   },
   {

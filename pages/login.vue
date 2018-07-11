@@ -1,76 +1,71 @@
 <template>
-   <div class="center">
-   <form v-on:submit.prevent="submit()">
-        <div>
-            <q-input
-              type="text"
-              color="blue"
-              size="xl"
-              v-model="form.email"
-              @blur="$v.form.email.$touch"
-              :error="$v.form.email.$error"
-              :before="[{icon: 'mail', handler () {}}]"/>
-            <q-input
-              type="password"
-              color="blue"
-              size="xl"
-              v-model="form.password"
-              @blur="$v.form.password.$touch"
-              :error="$v.form.password.$error"
-              :before="[{icon: 'fas fa-key', handler () {}}]"/>
-            <q-btn
-                class="q-mr-sm q-mt-sm"
-                flit
-                color="negative"
-                @click="submit">Entrar
-            </q-btn>
-            <q-btn
-                class="q-mt-sm"
-                flit
-                color="primary"
-                to="/cadastro">Cadastre-se
-            </q-btn>
+  <div class="q-pa-md fundoCinza">
+    <div class="row q-mt-xl text-weight-bold justify-center">
+      <span style="font-size:25px;">Acesse agora o Clube</span>
+    </div>
+    <div class="row text-weight-bold justify-center">
+      <span style="font-size:25px;"> Lojas REDE!</span>
+    </div>
+    <form v-on:submit.prevent="submit()">
+      <div class="row q-mt-xl">
+        <div class="col-12">
+         <q-input
+            v-model="form.cpf"
+            type="number"
+            float-label="Cpf"/>
         </div>
+      </div>
+      <div class="row q-mt-xl">
+        <p>Informe seu CPF para entrar em uma conta ou criar uma nova. Seus dados são apenas para identificação.</p>
+      </div>
+      <div class="row q-mt-md">
+          <q-btn
+              class="fit"
+              size="lg"
+              color="negative"
+              @click="submit">Entrar
+          </q-btn>
+      </div>
+      <div class="row q-mt-md">
+          <q-btn
+              class="fit"
+              size="lg"
+              color="primary"
+              to="/cadastro">Cadastre-se
+          </q-btn>
+      </div>
     </form>
+    <div class="row justify-center q-mt-md">
+    <span color="red">Entrar como visitante</span>
+    </div>
   </div>
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+//  import axios from 'axios'
 export default {
   name: 'Login',
   data () {
     return {
       form: {
-        email: '',
-        password: '',
-        lembrar: ''
+        cpf: ''
       }
-    }
-  },
-  validations: {
-    form: {
-      email: { required, email },
-      password: { required }
     }
   },
   methods: {
     submit: function () {
-      this.$v.form.$touch()
-      if (!this.$v.form.$error) {
-        this.$q.localStorage.set('login', this.form)
-        // axios.post(`http://localhost:56795/api/Autenticacao`, this.form)
-        //   .then(response => {
-        //     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken
-        //   })
-        this.$router.push('/menu')
-      }
+      this.$q.localStorage.set('login', this.form)
+      // axios.get(`http://http://192.168.1.45:51046/api/values/`)
+      //   .then(response => {
+      //     console.log(response)
+      //     //  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken
+      //   })
+      this.$router.push('/menu')
     }
   },
   created: function () {
-    let value = this.$q.localStorage.get.item('login')
-    this.form.email = value.email
-    this.form.password = value.password
+    let value = this.$q.localStorage.get.item('cpf')
+    this.form.cpf = value !== null ? value.cpf : ''
   }
 }
 </script>
