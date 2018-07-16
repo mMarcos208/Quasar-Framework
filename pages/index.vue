@@ -21,18 +21,24 @@
     <div class="row q-mt-md justify-center">
      <q-btn
       color="negative"
-      size="lg">
+      size="lg"
+      @click="minimizedModal=true">
       Trocar Loja
      </q-btn>
     </div>
+    <q-modal v-model="minimizedModal" minimized :content-css="{padding: '50px'}" ref="modalRef">
+      <div class="q-display-1 q-mb-md">Trocar Loja</div>
+      <p>Escolha outra loja!</p>
+      <q-btn color="red" v-close-overlay label="Close" />
+    </q-modal>
     <div class="row justify-center q-mt-md">
-      {{this.logradouro}}
+      {{ this.logradouro }}
     </div>
     <div class="row justify-center">
-      {{this.bairro}}
+      {{ this.bairro }}
     </div>
     <div class="row justify-center text-weight-bold q-mt-md">
-      {{this.telefone}}
+      {{ this.telefone }}
     </div>
   </div>
   <div class="fundoCinza q-mt-sm">
@@ -78,7 +84,9 @@ export default {
       logradouro: 'Rua dos Caetés, 499',
       bairro: 'Centro - BELO HORIZONTE',
       telefone: '(31) 3514-0871',
-      indentificacao: '50 - Caetés'
+      indentificacao: '50 - Caetés',
+      minimizedModal: false,
+      position: 'top'
     }
   }
 }

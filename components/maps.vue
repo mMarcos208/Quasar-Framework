@@ -1,7 +1,6 @@
 <template>
-   <q-page class='bg-white'>
-     <div>
-         <gmap-map
+  <div>
+     <gmap-map v-if='mostraMapa'
             :center='center'
             :zoom='15'
             map-type-id='terrain'
@@ -14,35 +13,14 @@
                @click='center=m.position'
                ></gmap-marker>
          </gmap-map>
-         <div>
-            <div class="row justify-center">
-              <q-icon name="place"
-                style="font-size: 35px" color="red"/>
-            </div>
-            <div class="row justify-center">
-              <span>
-                Lojas mais próximas a você!
-              </span>
-            </div>
-          </div>
-      <q-list class="q-ma-sm borderRadius" v-for='(item,indice) in this.detalhesLojas' :key='indice'>
-        <q-collapsible v-bind:label="item.name">
-          <div class='row'>
-            {{ item.address }}
-          </div>
-          <div class='row q-mt-sm'>
-            Distância: <b>{{ item.distance }} km</b>
-          </div>
-        </q-collapsible>
-      </q-list>
-      </div>
-   </q-page>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 export default {
-  name: 'Localizacao',
+  name: 'MeuMapa',
+  props: ['mostraMapa'],
   data () {
     return {
       search: '',
@@ -93,17 +71,13 @@ export default {
           ]
         }
       ]
-
     }
-  },
-  mounted () {
-    this.geolocate()
   },
   methods: {
     buscarLojas: function (center) {
       this.clearLocations()
 
-      axios.get(`http://localhost:60543/api/local/${center.lat}/${center.lng}`)
+      axios.get(`http://localhost:62748/api/local/${center.lat}/${center.lng}`)
         .then(resposta => {
           this.detalhesLojas = resposta.data
           var markerNodes = resposta.data
@@ -152,19 +126,4 @@ export default {
 </script>
 
 <style>
-.borderRadius {
-  border-radius: 10px;
-}
-#floating-panel {
-  position: absolute;
-  top: 10px;
-  z-index: 5;
-  background-color: #fff;
-  padding: 5px;
-  border: 1px solid #999;
-  text-align: center;
-  font-family: 'Roboto','sans-serif';
-  line-height: 30px;
-  padding-left: 10px;
-}
 </style>

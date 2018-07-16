@@ -27,6 +27,12 @@
           </q-btn>
       </div>
       <div class="row q-mt-md">
+        <fb-signin-button
+          :params="fbSignInParams"
+          @success="onSignInSuccess"
+          @error="onSignInError">
+          Entrar com facebook
+        </fb-signin-button>
           <q-btn
               class="fit"
               size="lg"
@@ -47,10 +53,36 @@ export default {
   name: 'Login',
   data () {
     return {
+      fbSignInParams: {
+        scope: 'email,user_likes',
+        return_scopes: true
+      },
       form: {
         cpf: ''
       }
     }
+  },
+  beforeMount () {
+    window.fbAsyncInit = (function () {
+      window.FB.init({
+        appId: '1854483668193025',
+        xfbml: true,
+        version: 'v3.0'
+      })
+      window.FB.AppEvents.logPageView()
+    })(function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0]
+      if (d.getElementById(id)) {
+        return
+      }
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    }(document, 'script', 'facebook-jssdk'))
+    window.FB.getLoginStatus((response) => {
+      this.statusChangeCallback(response)
+    })
   },
   methods: {
     submit: function () {
@@ -61,6 +93,35 @@ export default {
       //     //  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken
       //   })
       this.$router.push('/menu')
+    },
+    statusChangeCallback: function (response) {
+      console.log(response)
+      if (response.status === 'connected') {
+        this.testAPI()
+      } else {
+        // document.getElementById('status').innerHTML = 'Por favor, faça o login para acesso exclusivo as promoções!'
+      }
+    },
+    checkLoginState: function () {
+      window.FB.getLoginStatus(function (response) {
+        this.statusChangeCallback(response)
+      })
+    },
+    testeAPi: function () {
+      console.log('Welcome!  Fetching your information.... ')
+      window.FB.api('/me', function (response) {
+        console.log('Successful login for: ' + response.name)
+        document.getElementById('status').innerHTML =
+        'Thanks for logging in, ' + response.name + '!'
+      })
+    },
+    onSignInSuccess (response) {
+      window.FB.api('/me', dude => {
+        console.log(`Good to see you, ${dude.name}.`)
+      })
+    },
+    onSignInError (error) {
+      console.log('OH NOES', error)
     }
   },
   created: function () {
@@ -71,4 +132,12 @@ export default {
 </script>
 
 <style>
+.fb-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #4267b2;
+  color: #fff;
+}
 </style>
