@@ -1,9 +1,15 @@
 <template>
   <q-page>
   <div>
-    <div class="row justify-center">
-      <img src="~assets/telaInicio.png">
-    </div>
+       <q-carousel
+      color="white"
+      arrows
+      quick-nav
+      height="300px"
+    >
+      <q-carousel-slide img-src="statics/telaInicio.png" />
+      <q-carousel-slide img-src="statics/loja-caete.jpg" />
+    </q-carousel>
   </div>
   <div class=" q-mt-md">
     <div class="row justify-center">
@@ -48,6 +54,7 @@
           round
           icon="fab fa-internet-explorer"
           size="lg"
+          @click="$router.replace('/https://www.lojasrede.com.br')"
           />
       </div>
       <div class="col-3 q-mt-lg">

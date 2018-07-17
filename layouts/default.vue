@@ -1,8 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf" bg-negative>
-    <q-layout-header>
+    <q-layout-header size="xl">
       <q-toolbar
-        color="negative"
+        color="bg-white"
+        size="sm"
         :glossy="$q.theme === 'mat'"
         :inverted="$q.theme === 'ios'"
       >
@@ -15,7 +16,6 @@
         >
           <q-icon name="menu" />
         </q-btn>
-
         <q-toolbar-title>
               Clube Lojas REDE
         </q-toolbar-title>
@@ -54,16 +54,18 @@
     </q-layout-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view @cartItensLength="setCartLength" @favoriteItensLength="setFavoriteLength"/>
     </q-page-container>
     <q-layout-footer>
       <q-tabs color="negative">
         <q-route-tab
+        v-bind:count="totalCartItens"
         icon="fas fa-cart-plus"
         to="/cart"
         exact
         slot="title"/>
         <q-route-tab
+        v-bind:count="totalFavoriteItens"
         icon="far fa-heart"
         to="/favorite"
         exact
@@ -85,16 +87,25 @@
 
 <script>
 import { openURL } from 'quasar'
-
 export default {
   name: 'LayoutDefault',
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      totalCartItens: null,
+      totalFavoriteItens: null
     }
   },
   methods: {
-    openURL
+    openURL,
+    setCartLength: function (value) {
+      console.log(value)
+      this.totalCartItens = value.total
+    },
+    setFavoriteLength: function (value) {
+      console.log(value)
+      this.totalFavoriteItens = value.total
+    }
   }
 }
 </script>

@@ -27,28 +27,30 @@
           </q-btn>
       </div>
       <div class="row q-mt-md">
+       <q-btn
+              icon-right="fab fa-facebook-square"
+              class="fit"
+              size="lg"
+              color="primary">
         <fb-signin-button
           :params="fbSignInParams"
           @success="onSignInSuccess"
-          @error="onSignInError">
-          Entrar com facebook
+          @error="onSignInError"
+          @click="clickLogin">
+          Entrar com Facebook
         </fb-signin-button>
-          <q-btn
-              class="fit"
-              size="lg"
-              color="primary"
-              to="/cadastro">Cadastre-se
-          </q-btn>
+      </q-btn>
       </div>
     </form>
     <div class="row justify-center q-mt-md">
-    <span color="red">Entrar como visitante</span>
+      <q-btn label="Entrar como Visitante"
+        to="/menu"
+        size="xs"
+        color="dark" />
     </div>
   </div>
 </template>
-
 <script>
-//  import axios from 'axios'
 export default {
   name: 'Login',
   data () {
@@ -62,14 +64,20 @@ export default {
       }
     }
   },
-  beforeMount () {
+  created: function () {
+    let ref = this
+    let value = this.$q.localStorage.get.item('cpf')
+    this.form.cpf = value !== null ? value.cpf : ''
     window.fbAsyncInit = (function () {
       window.FB.init({
         appId: '1854483668193025',
         xfbml: true,
-        version: 'v3.0'
+        version: 'v2.7'
       })
-      window.FB.AppEvents.logPageView()
+
+      window.FB.getLoginStatus(function (response) {
+        ref.statusChangeCallback(response)
+      })
     })(function (d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0]
       if (d.getElementById(id)) {
@@ -77,29 +85,26 @@ export default {
       }
       js = d.createElement(s)
       js.id = id
-      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      js.src = '//connect.facebook.net/en_US/sdk.js'
       fjs.parentNode.insertBefore(js, fjs)
     }(document, 'script', 'facebook-jssdk'))
-    window.FB.getLoginStatus((response) => {
-      this.statusChangeCallback(response)
-    })
   },
   methods: {
     submit: function () {
-      this.$q.localStorage.set('login', this.form)
+      this.$q.localStorage.set('cpf', this.form)
       // axios.get(`http://http://192.168.1.45:51046/api/values/`)
       //   .then(response => {
       //     console.log(response)
       //     //  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken
       //   })
-      this.$router.push('/menu')
+      this.login()
     },
     statusChangeCallback: function (response) {
-      console.log(response)
       if (response.status === 'connected') {
-        this.testAPI()
-      } else {
-        // document.getElementById('status').innerHTML = 'Por favor, faça o login para acesso exclusivo as promoções!'
+        window.FB.api('/me', (response) => {
+          // this.login()
+          // console.log('Successful login for: ' + response.name)
+        })
       }
     },
     checkLoginState: function () {
@@ -107,37 +112,24 @@ export default {
         this.statusChangeCallback(response)
       })
     },
-    testeAPi: function () {
-      console.log('Welcome!  Fetching your information.... ')
-      window.FB.api('/me', function (response) {
-        console.log('Successful login for: ' + response.name)
-        document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!'
-      })
-    },
     onSignInSuccess (response) {
       window.FB.api('/me', dude => {
-        console.log(`Good to see you, ${dude.name}.`)
+        this.login() // console.log(`Good to see you, ${dude.name}.`)
       })
     },
     onSignInError (error) {
       console.log('OH NOES', error)
+    },
+    login () {
+      this.$router.push('/menu')
+    },
+    clickLogin: function () {
+      window.FB.login(function (response) {
+      }, {scope: 'public_profile,email'})
     }
-  },
-  created: function () {
-    let value = this.$q.localStorage.get.item('cpf')
-    this.form.cpf = value !== null ? value.cpf : ''
   }
 }
 </script>
 
 <style>
-.fb-signin-button {
-  /* This is where you control how the button looks. Be creative! */
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px;
-  background-color: #4267b2;
-  color: #fff;
-}
 </style>

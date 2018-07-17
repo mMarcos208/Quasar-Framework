@@ -9,7 +9,8 @@ export default [
       { path: '/local', component: () => import('pages/locale') },
       { path: '/site', component: () => import('pages/site') },
       { path: '/favorite', component: () => import('pages/favorite') },
-      { path: '/cart', component: () => import('pages/cart') }
+      { path: '/cart', component: () => import('pages/cart') },
+      { path: '/ofertas', component: () => import('pages/ofertas') }
     ]
   },
   {
