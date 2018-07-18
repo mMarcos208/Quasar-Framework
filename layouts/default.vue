@@ -1,9 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf" bg-negative>
-    <q-layout-header size="xl">
+    <q-layout-header>
       <q-toolbar
         color="bg-white"
-        size="sm"
         :glossy="$q.theme === 'mat'"
         :inverted="$q.theme === 'ios'"
       >
@@ -77,7 +76,7 @@
         slot="title"/>
       <q-route-tab
         icon="not_listed_location"
-        to="/local"
+        to="/gMaps"
          exact
         slot="title"/>
       </q-tabs>

@@ -6,7 +6,7 @@
             :zoom='15'
             map-type-id='terrain'
             style='width:100%;  height: 300px; margin-top: 10px;'
-            :options='{styles: styles}'>
+            :options='{disableDefaultUI: true}'>
             <gmap-marker
                :key='index'
                v-for='(m, index) in markers'

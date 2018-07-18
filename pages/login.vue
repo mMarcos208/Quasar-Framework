@@ -33,6 +33,7 @@
               size="lg"
               color="primary">
         <fb-signin-button
+          ref="facebook"
           :params="fbSignInParams"
           @success="onSignInSuccess"
           @error="onSignInError"
@@ -64,12 +65,12 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     let ref = this
     let value = this.$q.localStorage.get.item('cpf')
     this.form.cpf = value !== null ? value.cpf : ''
     window.fbAsyncInit = (function () {
-      window.FB.init({
+      ref.$refs.facebook._init({
         appId: '1854483668193025',
         xfbml: true,
         version: 'v2.7'
