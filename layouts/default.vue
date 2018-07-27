@@ -95,14 +95,16 @@ export default {
       totalFavoriteItens: null
     }
   },
+  created () {
+    this.totalFavoriteItens = this.$q.localStorage.get.item('favorite') === null ? '' : this.$q.localStorage.get.item('favorite').length
+    this.totalCartItens = this.$q.localStorage.get.item('cart') === null ? '' : this.$q.localStorage.get.item('cart').length
+  },
   methods: {
     openURL,
     setCartLength: function (value) {
-      console.log(value)
       this.totalCartItens = value.total
     },
     setFavoriteLength: function (value) {
-      console.log(value)
       this.totalFavoriteItens = value.total
     }
   }

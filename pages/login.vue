@@ -1,4 +1,4 @@
-<template>
+<template padding>
   <div class="q-pa-md fundoCinza">
     <div class="row q-mt-xl text-weight-bold justify-center">
       <span style="font-size:25px;">Acesse agora o Clube</span>
@@ -12,34 +12,52 @@
          <q-input
             v-model="form.cpf"
             type="number"
-            float-label="Cpf"/>
+            float-label="Cpf"
+            :after="[
+            {
+              icon: 'send',
+              handler () {
+                submit()
+              }
+            }
+          ]"/>
         </div>
       </div>
       <div class="row q-mt-xl">
         <p>Informe seu CPF para entrar em uma conta ou criar uma nova. Seus dados são apenas para identificação.</p>
       </div>
       <div class="row q-mt-md">
-          <q-btn
-              class="fit"
-              size="lg"
-              color="negative"
-              @click="submit">Entrar
-          </q-btn>
+        <q-btn
+            icon-right="fab fa-facebook-square"
+            class="fit"
+            size="md"
+            color="primary">
+          <fb-signin-button
+            :params="fbSignInParams"
+            @success="onSignInSuccess"
+            @error="onSignInError">
+            Entrar com Facebook
+          </fb-signin-button>
+        </q-btn>
       </div>
+      <!-- <div>
+        <q-btn
+        @click="login">
+        FAcebook do Cordova
+        </q-btn>
+      </div> -->
       <div class="row q-mt-md">
-       <q-btn
-              icon-right="fab fa-facebook-square"
-              class="fit"
-              size="lg"
-              color="primary">
-        <fb-signin-button
-          ref="facebook"
-          :params="fbSignInParams"
-          @success="onSignInSuccess"
-          @error="onSignInError"
-          @click="clickLogin">
-          Entrar com Facebook
-        </fb-signin-button>
+        <q-btn
+        icon-right="fab fa-google"
+        class="fit"
+        size="md"
+        color="red">
+      <g-signin-button
+        :params="googleSignInParams"
+        @success="onSignInSuccessG"
+        @error="onSignInErrorG">
+        Entrar com Google
+      </g-signin-button>
       </q-btn>
       </div>
     </form>
@@ -57,38 +75,20 @@ export default {
   data () {
     return {
       fbSignInParams: {
-        scope: 'email,user_likes',
+        scope: 'email,public_profile',
         return_scopes: true
+      },
+      googleSignInParams: {
+        client_id: '282929403016-obgrh4eonpt6oa5isg721cvjd8iu1n7f.apps.googleusercontent.com'
       },
       form: {
         cpf: ''
       }
     }
   },
-  mounted: function () {
-    let ref = this
+  beforeMount () {
     let value = this.$q.localStorage.get.item('cpf')
     this.form.cpf = value !== null ? value.cpf : ''
-    window.fbAsyncInit = (function () {
-      ref.$refs.facebook._init({
-        appId: '1854483668193025',
-        xfbml: true,
-        version: 'v2.7'
-      })
-
-      window.FB.getLoginStatus(function (response) {
-        ref.statusChangeCallback(response)
-      })
-    })(function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0]
-      if (d.getElementById(id)) {
-        return
-      }
-      js = d.createElement(s)
-      js.id = id
-      js.src = '//connect.facebook.net/en_US/sdk.js'
-      fjs.parentNode.insertBefore(js, fjs)
-    }(document, 'script', 'facebook-jssdk'))
   },
   methods: {
     submit: function () {
@@ -98,35 +98,31 @@ export default {
       //     console.log(response)
       //     //  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken
       //   })
-      this.login()
-    },
-    statusChangeCallback: function (response) {
-      if (response.status === 'connected') {
-        window.FB.api('/me', (response) => {
-          // this.login()
-          // console.log('Successful login for: ' + response.name)
-        })
-      }
-    },
-    checkLoginState: function () {
-      window.FB.getLoginStatus(function (response) {
-        this.statusChangeCallback(response)
-      })
+      //  this.login()
+      this.$router.push('/menu')
     },
     onSignInSuccess (response) {
       window.FB.api('/me', dude => {
-        this.login() // console.log(`Good to see you, ${dude.name}.`)
+        console.log(dude)
       })
     },
     onSignInError (error) {
       console.log('OH NOES', error)
     },
-    login () {
-      this.$router.push('/menu')
+    onSignInSuccessG (googleUser) {
+      const profile = googleUser.getBasicProfile()
+      console.log(profile)
     },
-    clickLogin: function () {
+    onSignInErrorG (error) {
+      console.log('OH NOES', error)
+    },
+    login () {
+      alert('Entrou no login!')
       window.FB.login(function (response) {
+        console(response)
       }, {scope: 'public_profile,email'})
+      //  this.$router.push('/menu')
+      //  window.facebookConnectPlugin.login(['email, public_profile'], this.onSignInSuccess, this.onSignInError)
     }
   }
 }

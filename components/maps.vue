@@ -3,7 +3,6 @@
      <gmap-map v-if='mostraMapa'
             :center='center'
             :zoom='20'
-            map-type-id='terrain'
             style='width:100%;  height: 500px;'
             ref="map"
             :options='{disableDefaultUI: true, zoomControl: true}'>
@@ -12,6 +11,17 @@
                @click='center=marker.position'
                ></gmap-marker>
          </gmap-map>
+      <div class="row">
+        <div class="col-10">
+        </div>
+        <div class="col-2 pull-right">
+          <q-btn
+            round
+            icon='directions'
+            size='lg'
+            @click='calculateAndDisplayRoute'/>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -23,7 +33,10 @@ export default {
     return {
       map: '',
       marker: '',
-      center: { lat: -19.9191248, lng: -43.9386291 }
+      center: { lat: -19.9191248, lng: -43.9386291 },
+      directionsDisplay: '',
+      directionsService: ''
+
     }
   },
   mounted () {
@@ -38,22 +51,36 @@ export default {
       })
     },
     geolocate: function () {
-      if (navigator.geolocation) {
-        alert('Geolocation is supported!')
-      } else {
-        alert('Geolocation is not supported for this Browser/OS.')
+      navigator.geolocation.getCurrentPosition(this.geolocationSuccess, this.geolocationError, {maximumAge: 3000, timeout: 3000, enableHighAccuracy: true})
+    },
+    geolocationSuccess: function (position) {
+      var latlng = new window.google.maps.LatLng(
+        parseFloat(position.coords.latitude),
+        parseFloat(position.coords.longitude))
+      this.center = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
       }
-      navigator.geolocation.getCurrentPosition(position => {
-        let latlng = new window.google.maps.LatLng(
-          parseFloat(position.coords.latitude),
-          parseFloat(position.coords.longitude))
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        this.createMarker(latlng)
-        this.addYourLocationButton()
-      })
+      this.marker = ''
+      this.createMarker(latlng)
+      this.addYourLocationButton()
+    },
+    geolocationSuccessButton: function (position) {
+      var latlng = new window.google.maps.LatLng(
+        parseFloat(position.coords.latitude),
+        parseFloat(position.coords.longitude))
+      this.center = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+      this.createMarker(latlng)
+    },
+    geolocationError: function () {
+      alert('Error: Localização não disponível, verifique seu GPS!')
+      var latlng = new window.google.maps.LatLng(
+        parseFloat(this.center.lat),
+        parseFloat(this.center.lng))
+      this.createMarker(latlng)
     },
     addYourLocationButton: function () {
       var controlDiv = document.createElement('div')
@@ -88,35 +115,38 @@ export default {
       })
       var ref = this
       firstChild.addEventListener('click', function () {
-        navigator.geolocation.getCurrentPosition(position => {
-          let latlng = new window.google.maps.LatLng(
-            parseFloat(position.coords.latitude),
-            parseFloat(position.coords.longitude))
-          ref.center = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          }
-          ref.createMarker(latlng)
-        })
+        navigator.geolocation.getCurrentPosition(ref.geolocationSuccessButton, ref.geolocationError, {maximumAge: 3000, timeout: 2000, enableHighAccuracy: true})
+        if (ref.directionsDisplay !== '') {
+          ref.directionsDisplay.setMap(null)
+        }
       })
 
       controlDiv.index = 1
       this.$refs.map.$mapObject.controls[window.google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv)
+    },
+    calculateAndDisplayRoute: function () {
+      this.directionsService = new window.google.maps.DirectionsService()
+      this.directionsDisplay = new window.google.maps.DirectionsRenderer({
+        map: this.$refs.map.$mapObject
+      })
+      var display = this.directionsDisplay
+      var selectedMode = 'WALKING'
+      var origem = this.center
+      this.directionsService.route({
+        origin: {lat: origem.lat, lng: origem.lng},
+        destination: {lat: -19.9167915, lng: -43.9387866},
+        travelMode: window.google.maps.TravelMode[selectedMode]
+      }, function (response, status) {
+        if (status === 'OK') {
+          display.setDirections(response)
+        } else {
+          alert('Falha, tente novamente mais tarde!')
+        }
+      })
     }
+
   }
 }
 </script>
-
 <style>
-.buttonGeolocalization {
-  background: #fff;
-  border: none;
-  outline: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-  cursor: pointer;
-  margin-right: 10px;
-}
 </style>
