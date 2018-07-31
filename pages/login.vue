@@ -4,7 +4,7 @@
       <span style="font-size:25px;">Acesse agora o Clube</span>
     </div>
     <div class="row text-weight-bold justify-center">
-      <span style="font-size:25px;"> Lojas REDE!</span>
+      <span style="font-size:25px;"> XXXXX!</span>
     </div>
     <form v-on:submit.prevent="submit()">
       <div class="row q-mt-xl">
