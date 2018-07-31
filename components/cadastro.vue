@@ -1,90 +1,118 @@
 <template>
-  <div class="q-ma-xl">
+<div>
+  <div class="row cabecalho">
+    <div class="q-mt-md q-ml-md">
       <q-icon
         v-go-back=" '/'"
         name="fas fa-arrow-left"
-        />
+      />
+    </div>
+    <div class="q-mt-md q-ml-md">
+      <span class="voltar">Tela Inicial</span>
+    </div>
+  </div>
   <form>
-  <q-card class="q-mt-md">
-      <q-card-title>
-        Dados Pessoais
-      </q-card-title>
-      <q-card-main>
+    <div class="row justify-center q-mt-sm" v-if="photo">
+      <img :src="photo" class="borderRadius">
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
           v-model="cliente.cpf"
           float-label="Cpf"
           @blur="$v.cliente.cpf.$touch"
           @keyup.enter="submit" :error="$v.cliente.cpf.$error"
           :before="[{icon: 'credit_card', handler () {}}]" />
-
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
-          v-model="cliente.nomeCompleto"
+          v-model="nomeCompleto"
           float-label="Nome Completo"
           @blur="$v.cliente.nomeCompleto.$touch"
           @keyup.enter="submit" :error="$v.cliente.nomeCompleto.$error"
           :before="[{icon: 'person_pin', handler () {}}]" />
-
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
-          v-model="cliente.email"
+          v-model="email"
           float-label="E-mail"
           @blur="$v.cliente.email.$touch"
           @keyup.enter="submit" :error="$v.cliente.email.$error"
           :before="[{icon: 'mail', handler () {}}]"/>
-      </q-card-main>
-  </q-card>
-    <q-card class="q-mt-md">
-      <q-card-title>
-        Endereço
-      </q-card-title>
-      <q-card-main>
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <q-radio color="primary" v-model="cliente.option" val="M" label="Masculino" />
+      <q-radio color="red" class="q-ml-xl" v-model="cliente.option" val="F" label="Feminino" />
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-5">
          <q-input
           type="text"
           v-model="cliente.cep"
           float-label="Cep"
           @blur="buscarCep"/>
-
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
           v-model="cliente.logradouro"
           float-label="Rua"/>
-
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
           v-model="cliente.uf"
           float-label="Estado"/>
-
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
           v-model="cliente.localidade"
           float-label="Cidade"/>
-
+      </div>
+    </div>
+    <div class="row q-ma-md">
+      <div class="col-12">
         <q-input
           v-model="cliente.bairro"
           float-label="Bairro"/>
-      </q-card-main>
-    </q-card>
+      </div>
+    </div>
+  <div class="q-ma-md">
   <q-btn
+    size="xl"
     color="primary"
-    class="q-mt-sm fit"
+    class="fit"
     @click="submit">Salvar
   </q-btn>
+  </div>
  </form>
 </div>
-
 </template>
 <script>
 import axios from 'axios'
 import { required, email } from 'vuelidate/lib/validators'
 export default {
   name: 'CreateCadastro',
+  props: ['email', 'nomeCompleto', 'photo'],
   data () {
     return {
       cliente: {
-        nomeCompleto: '',
         cpf: '',
-        email: '',
         cep: '',
         logradouro: '',
         localidade: '',
         bairro: '',
-        uf: ''
+        uf: '',
+        option: ''
       }
     }
   },
@@ -128,4 +156,17 @@ export default {
 }
 </script>
 <style>
+.borderRadius {
+  border-radius: 20px;
+  max-width: 100px;
+  max-height: 100px;
+}
+.cabecalho {
+  height: 50px;
+  background-color: red
+}
+.voltar {
+  color: black;
+  font-weight: bold
+}
 </style>

@@ -1,20 +1,20 @@
 <template>
   <q-page padding>
     <q-infinite-scroll :handler="loadMore">
-    <div class="row">
-      <div v-for='(item,indice) in this.produtos' :key='indice'>
-        <q-card inline class="q-ma-sm col-6">
-          <q-card-media>
-            <img v-bind:src="item.url">
-          </q-card-media>
-          <q-card-actions align="around">
-            <q-btn flat round icon="fas fa-shopping-cart" @click="cart($event,item)"/>
-            <q-btn flat round icon="favorite" @click="favorite($event,item)"/>
-            <q-btn flat round icon="share" to="whatsapp://send?text=Hello%20World!" />
-          </q-card-actions>
-        </q-card>
+      <div class="row">
+        <div v-for='(item,indice) in produtos' :key='indice' class="col-6">
+          <q-card inline class="q-ma-sm bordaRedonda">
+            <q-card-media>
+              <img v-bind:src="item.url">
+            </q-card-media>
+            <q-card-actions align="around">
+              <q-btn flat round icon="fas fa-shopping-cart" @click="cart($event,item)"/>
+              <q-btn flat round icon="favorite" @click="favorite($event,item)"/>
+              <q-btn flat round icon="share" to="whatsapp://send?text=Hello%20World!" />
+            </q-card-actions>
+          </q-card>
+        </div>
       </div>
-    </div>
   <div class="row justify-center" style="margin-bottom: 50px;">
     <q-spinner-dots slot="message" color="red" :size="40" />
   </div>
@@ -50,12 +50,12 @@ export default {
       setTimeout(() => {
         axios.get('https://jsonplaceholder.typicode.com/photos')
           .then(response => {
-            let indiceInital = (index * 10) - 10
-            let indiceFinal = index * 10
+            let indiceInital = (index * 6) - 6
+            let indiceFinal = index * 6
             this.produtos = this.produtos.concat(response.data.slice(indiceInital, indiceFinal))
             done()
           })
-      }, 2500)
+      }, 1500)
     },
     share: function () {
 
@@ -110,4 +110,7 @@ export default {
 </script>
 
 <style>
+.bordaRedonda {
+  border-radius: 15px;
+}
 </style>

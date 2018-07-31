@@ -11,8 +11,7 @@ export default [
       { path: '/favorite', component: () => import('pages/favorite') },
       { path: '/cart', component: () => import('pages/cart') },
       { path: '/ofertas', component: () => import('pages/ofertas') },
-      { path: '/gMaps', component: () => import('pages/mapsGeolocalizacao') },
-      { path: '/cadastro', component: () => import('pages/cadastro') }
+      { path: '/gMaps', component: () => import('pages/mapsGeolocalizacao') }
     ]
   },
   {

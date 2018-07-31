@@ -47,18 +47,13 @@
         </q-btn>
       </div> -->
       <div class="row q-mt-md">
-        <q-btn
+      <q-btn
         icon-right="fab fa-google"
         class="fit"
         size="md"
-        color="red">
-      <g-signin-button
-        :params="googleSignInParams"
-        @success="onSignInSuccessG"
-        @error="onSignInErrorG">
-        Entrar com Google
-      </g-signin-button>
-      </q-btn>
+        color="red"
+        @click="login()">
+      Entrar com o Google</q-btn>
       </div>
     </form>
     <div class="row justify-center q-mt-md">
@@ -77,9 +72,6 @@ export default {
       fbSignInParams: {
         scope: 'email,public_profile',
         return_scopes: true
-      },
-      googleSignInParams: {
-        client_id: '282929403016-obgrh4eonpt6oa5isg721cvjd8iu1n7f.apps.googleusercontent.com'
       },
       form: {
         cpf: ''
@@ -117,12 +109,14 @@ export default {
       console.log('OH NOES', error)
     },
     login () {
-      alert('Entrou no login!')
-      window.FB.login(function (response) {
-        console(response)
-      }, {scope: 'public_profile,email'})
-      //  this.$router.push('/menu')
-      //  window.facebookConnectPlugin.login(['email, public_profile'], this.onSignInSuccess, this.onSignInError)
+      window.plugins.googleplus.login({},
+        (response) => {
+          this.$q.localStorage.set('dadosPessoais', response)
+          this.$router.push(`/cadastro`)
+        },
+        function (msg) {
+          alert('error: ' + msg)
+        })
     }
   }
 }

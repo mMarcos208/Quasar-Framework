@@ -32,17 +32,11 @@
       Trocar Loja
      </q-btn>
     </div>
-    <q-modal v-model='minimizedModal' minimized>
-      <div class='q-display-1 q-mb-md'>Trocar Loja</div>
+    <q-modal v-model='minimizedModal' :content-css="{padding: '50px'}" position="top">
+      <div class='q-display-1'>Trocar Loja</div>
       <p>Escolha outra loja!</p>
-      <q-btn color='red' v-close-overlay label='Close' />
+      <q-btn color='red' v-close-overlay label='Fechar' />
     </q-modal>
-    <q-modal v-model="minimizedModal" :content-css="{padding: '50px', minWidth: '50vw'}">
-      <div class="q-display-1 q-mb-md">Basic Modal</div>
-      <p v-for="n in 25" :key="`a-${n}`">Scroll down to close</p>
-      <q-btn color="primary" @click="basicModal = false" label="Close" />
-    </q-modal>
-
     <div class='row justify-center q-mt-md'>
       {{ this.logradouro }}
     </div>
@@ -82,13 +76,16 @@
           round
           icon='fab fa-twitter'
           size='lg'
-          @click='redirectTwitter(url)'/>
+          @click='redirectTwitter'/>
       </div>
     </div>
   </div>
   </q-page>
 </template>
 <style>
+.borda {
+  border-radius: 70px;
+}
 </style>
 
 <script>

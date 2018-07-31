@@ -3,7 +3,7 @@
      <gmap-map v-if='mostraMapa'
             :center='center'
             :zoom='20'
-            style='width:100%;  height: 500px;'
+            style='width:100%;  height: 300px;'
             ref="map"
             :options='{disableDefaultUI: true, zoomControl: true}'>
             <gmap-marker
