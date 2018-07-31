@@ -31,28 +31,18 @@
             icon-right="fab fa-facebook-square"
             class="fit"
             size="md"
-            color="primary">
-          <fb-signin-button
-            :params="fbSignInParams"
-            @success="onSignInSuccess"
-            @error="onSignInError">
+            color="primary"
+            @click="loginFacebook()">
             Entrar com Facebook
-          </fb-signin-button>
         </q-btn>
       </div>
-      <!-- <div>
-        <q-btn
-        @click="login">
-        FAcebook do Cordova
-        </q-btn>
-      </div> -->
       <div class="row q-mt-md">
       <q-btn
         icon-right="fab fa-google"
         class="fit"
         size="md"
         color="red"
-        @click="login()">
+        @click="loginGoogle()">
       Entrar com o Google</q-btn>
       </div>
     </form>
@@ -69,10 +59,6 @@ export default {
   name: 'Login',
   data () {
     return {
-      fbSignInParams: {
-        scope: 'email,public_profile',
-        return_scopes: true
-      },
       form: {
         cpf: ''
       }
@@ -93,29 +79,23 @@ export default {
       //  this.login()
       this.$router.push('/menu')
     },
-    onSignInSuccess (response) {
-      window.FB.api('/me', dude => {
-        console.log(dude)
-      })
+    loginFacebook (response) {
+      window.facebookConnectPlugin.login(['public_profile', 'email'], this.fbLoginSuccess, this.fbloginError)
     },
-    onSignInError (error) {
+    fbLoginSuccess: function (userData) {
+      console.log('UserInfo: ', userData)
+    },
+    fbloginError (error) {
       console.log('OH NOES', error)
     },
-    onSignInSuccessG (googleUser) {
-      const profile = googleUser.getBasicProfile()
-      console.log(profile)
-    },
-    onSignInErrorG (error) {
-      console.log('OH NOES', error)
-    },
-    login () {
+    loginGoogle () {
       window.plugins.googleplus.login({},
         (response) => {
           this.$q.localStorage.set('dadosPessoais', response)
           this.$router.push(`/cadastro`)
         },
         function (msg) {
-          alert('error: ' + msg)
+          console.log('error: ' + msg)
         })
     }
   }
