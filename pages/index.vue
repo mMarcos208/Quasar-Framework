@@ -32,7 +32,7 @@
       Trocar Loja
      </q-btn>
     </div>
-    <q-modal v-model='minimizedModal' :content-css="{padding: '50px'}" position="top">
+    <q-modal v-model='minimizedModal' :content-css="{padding: '50px'}" :position='this.position'>
       <div class='q-display-1'>Trocar Loja</div>
       <p>Escolha outra loja!</p>
       <q-btn color='red' v-close-overlay label='Fechar' />
@@ -53,6 +53,7 @@
         <q-btn
           round
           icon='fab fa-internet-explorer'
+          color='primary'
           size='lg'
           @click='redirectSite'
           />
@@ -61,6 +62,7 @@
         <q-btn
           round
           icon='fab fa-facebook'
+          color='primary'
           size='lg'
           @click='redirectFacebook'/>
       </div>
@@ -68,6 +70,7 @@
         <q-btn
           round
           icon='fab fa-instagram'
+          class='instagram'
           size='lg'
           @click='redirectInstagram'/>
       </div>
@@ -75,6 +78,7 @@
         <q-btn
           round
           icon='fab fa-twitter'
+          color='primary'
           size='lg'
           @click='redirectTwitter'/>
       </div>
@@ -86,6 +90,17 @@
 .borda {
   border-radius: 70px;
 }
+.instagram {
+  background: #f09433;
+  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+}
+.twitter {
+  color: #00aced;
+}
+
 </style>
 
 <script>
@@ -104,16 +119,16 @@ export default {
   },
   methods: {
     redirectSite: function () {
-      window.location.href = 'http://www.lojasrede.com.br'
+      window.location = 'http://www.lojasrede.com.br'
     },
     redirectFacebook: function () {
-      window.location.href = 'https://www.facebook.com/lojasrede/'
+      window.location = 'https://www.facebook.com/lojasrede/'
     },
     redirectInstagram: function () {
-      window.location.href = 'https://www.instagram.com/lojasrede/?hl=pt-br'
+      window.location = 'https://www.instagram.com/lojasrede/?hl=pt-br'
     },
     redirectTwitter: function () {
-      window.location.href = 'https://twitter.com/lojasrede'
+      window.location = 'https://twitter.com/lojasrede'
     }
   }
 }

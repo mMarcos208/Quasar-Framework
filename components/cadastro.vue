@@ -15,6 +15,11 @@
     <div class="row justify-center q-mt-sm" v-if="photo">
       <img :src="photo" class="borderRadius">
     </div>
+    <div class="row justify-center q-mt-sm q-ma-md" v-else>
+      <div class="col-12">
+        <q-uploader :url="photo" auto-expand/>
+      </div>
+    </div>
     <div class="row q-ma-md">
       <div class="col-12">
         <q-input
@@ -86,7 +91,7 @@
           float-label="Bairro"/>
       </div>
     </div>
-  <div class="q-ma-md">
+  <div>
   <q-btn
     size="xl"
     color="primary"
@@ -162,11 +167,11 @@ export default {
   max-height: 100px;
 }
 .cabecalho {
-  height: 50px;
+  height: 60px;
   background-color: red
 }
 .voltar {
-  color: black;
+  color: #fff;
   font-weight: bold
 }
 </style>

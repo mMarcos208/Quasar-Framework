@@ -18,6 +18,7 @@
         <q-toolbar-title>
               Clube Lojas REDE
         </q-toolbar-title>
+        <img src="~assets/barcode-scan.svg" @click="startCodeBar">
       </q-toolbar>
     </q-layout-header>
 
@@ -28,26 +29,27 @@
       <q-list
         no-border
         highlight
+        dense
       >
          <q-item to="/menu">
-          <q-item-side icon="fas fa-home" />
+          <q-item-side icon="fas fa-home" color="primary"/>
           <q-item-main label="Inicio" sublabel="Página inicial" />
         </q-item>
         <q-item to="/profile">
-          <q-item-side icon="fas fa-user-alt" />
+          <q-item-side icon="fas fa-user-alt" color="primary"/>
           <q-item-main label="Perfil" sublabel="Meus dados" />
         </q-item>
         <q-item to="/ofertas">
-          <q-item-side icon="fas fa-credit-card" />
+          <q-item-side icon="fas fa-credit-card" color="primary"/>
           <q-item-main label="Ofertas" sublabel="Ofertas" />
         </q-item>
         <q-item to="/site">
-          <q-item-side icon="fab fa-internet-explorer"/>
+          <q-item-side icon="fab fa-internet-explorer" color="primary"/>
           <q-item-main label="Site" sublabel="www.lojasrede.com.br" />
         </q-item>
-        <q-item to="/">
-          <q-item-side icon="fas fa-arrow-left"/>
-          <q-item-main label="Sair" sublabel="Login" />
+        <q-item>
+          <q-item-side icon="fas fa-arrow-left" color="primary"/>
+          <q-item-main label="Sair" sublabel="Login" to="/"/>
         </q-item>
       </q-list>
     </q-layout-drawer>
@@ -106,6 +108,31 @@ export default {
     },
     setFavoriteLength: function (value) {
       this.totalFavoriteItens = value.total
+    },
+    startCodeBar: function () {
+      cordova.plugins.barcodeScanner.scan(
+        function (result) {
+          alert('We got a barcode\n' +
+                'Result: ' + result.text + '\n' +
+                'Format: ' + result.format + '\n' +
+                'Cancelled: ' + result.cancelled)
+        },
+        function (error) {
+          alert('Scanning failed: ' + error)
+        },
+        {
+          preferFrontCamera: false, // iOS and Android
+          showFlipCameraButton: false, // iOS and Android
+          showTorchButton: true, // iOS and Android
+          torchOn: false, // Android, launch with the torch switched on (if available)
+          saveHistory: false, // Android, save scan history (default false)
+          prompt: 'Place a barcode inside the scan area', // Android
+          resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+          formats: 'EAN_13', // default: all but PDF_417 and RSS_EXPANDED
+          orientation: 'landscape', // Android only (portrait|landscape), default unset so it rotates with the device
+          disableAnimations: true, // iOS
+          disableSuccessBeep: false // iOS and Android
+        })
     }
   }
 }

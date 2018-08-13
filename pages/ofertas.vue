@@ -5,12 +5,12 @@
         <div v-for='(item,indice) in produtos' :key='indice' class="col-6">
           <q-card inline class="q-ma-sm bordaRedonda">
             <q-card-media>
-              <img v-bind:src="item.url">
+              <img v-bind:src="item.url" @click="detailProduct(item.id)">
             </q-card-media>
             <q-card-actions align="around">
               <q-btn flat round icon="fas fa-shopping-cart" @click="cart($event,item)"/>
               <q-btn flat round icon="favorite" @click="favorite($event,item)"/>
-              <q-btn flat round icon="share" to="whatsapp://send?text=Hello%20World!" />
+              <q-btn flat round icon="share" @click=" share(item.url)" />
             </q-card-actions>
           </q-card>
         </div>
@@ -57,8 +57,11 @@ export default {
           })
       }, 1500)
     },
-    share: function () {
-
+    detailProduct: function (id) {
+      this.$router.push(`/detalhesProduto/${id}`)
+    },
+    share: function (url) {
+      window.plugins.socialsharing.share('Acho que irá gostar do seguinte produto.', null, null, url)
     },
     favorite: function (event, item) {
       this.setColor(event)
