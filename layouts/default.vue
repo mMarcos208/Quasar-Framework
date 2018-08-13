@@ -16,7 +16,18 @@
           <q-icon name="menu" />
         </q-btn>
         <q-toolbar-title>
-              Clube Lojas REDE
+          <q-input
+            clearable
+            v-model="searchProdutos"
+            type="text"
+            color="white"
+            :after="[
+            {
+              icon: 'search',
+              handler () {
+              }
+            }
+          ]"/>
         </q-toolbar-title>
         <img src="~assets/barcode-scan.svg" @click="startCodeBar">
       </q-toolbar>
@@ -47,9 +58,9 @@
           <q-item-side icon="fab fa-internet-explorer" color="primary"/>
           <q-item-main label="Site" sublabel="www.lojasrede.com.br" />
         </q-item>
-        <q-item>
+        <q-item to="/" exact>
           <q-item-side icon="fas fa-arrow-left" color="primary"/>
-          <q-item-main label="Sair" sublabel="Login" to="/"/>
+          <q-item-main label="Sair" sublabel="Login"/>
         </q-item>
       </q-list>
     </q-layout-drawer>
@@ -60,28 +71,28 @@
     <q-layout-footer>
       <q-tabs color="negative">
         <q-route-tab
-        v-bind:count="totalCartItens"
-        icon="fas fa-cart-plus"
-        to="/cart"
-        exact
-        slot="title"/>
+          icon="account_circle"
+          to="/profile"
+          exact
+          slot="title"/>
         <q-route-tab
-        v-bind:count="totalFavoriteItens"
-        icon="far fa-heart"
-        to="/favorite"
-        exact
-        slot="title"/>
+          v-bind:count="totalCartItens"
+          icon="fas fa-cart-plus"
+          to="/cart"
+          exact
+          slot="title"/>
         <q-route-tab
-        icon="account_circle"
-        to="/profile"
-        exact
-        slot="title"/>
-      <q-route-tab
-        icon="not_listed_location"
-        to="/gMaps"
-         exact
-        slot="title"/>
-      </q-tabs>
+          v-bind:count="totalFavoriteItens"
+          icon="far fa-star"
+          to="/favorite"
+          exact
+          slot="title"/>
+        <q-route-tab
+          icon="not_listed_location"
+          to="/gMaps"
+          exact
+          slot="title"/>
+        </q-tabs>
     </q-layout-footer>
   </q-layout>
 </template>
@@ -94,7 +105,8 @@ export default {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
       totalCartItens: null,
-      totalFavoriteItens: null
+      totalFavoriteItens: null,
+      searchProdutos: ''
     }
   },
   created () {
@@ -133,6 +145,11 @@ export default {
           disableAnimations: true, // iOS
           disableSuccessBeep: false // iOS and Android
         })
+    },
+    redirectFromLogin: function () {
+      window.plugins.googleplus.logout()
+      window.facebookConnectPlugin.logout()
+      this.$router.push('/')
     }
   }
 }
