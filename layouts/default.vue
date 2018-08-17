@@ -46,21 +46,20 @@
           <q-item-side icon="fas fa-home" color="primary"/>
           <q-item-main label="Inicio" sublabel="Página inicial" />
         </q-item>
-        <q-item to="/profile">
+        <q-item to="/profile" class="paddingTop">
           <q-item-side icon="fas fa-user-alt" color="primary"/>
           <q-item-main label="Perfil" sublabel="Meus dados" />
         </q-item>
-        <q-item to="/ofertas">
+        <q-item to="/ofertas" class="paddingTop">
           <q-item-side icon="fas fa-credit-card" color="primary"/>
           <q-item-main label="Ofertas" sublabel="Ofertas" />
         </q-item>
-        <q-item to="/site">
+        <q-item to="/site" class="paddingTop">
           <q-item-side icon="fab fa-internet-explorer" color="primary"/>
           <q-item-main label="Site" sublabel="www.lojasrede.com.br" />
         </q-item>
-        <q-item to="/" exact>
-          <q-item-side icon="fas fa-arrow-left" color="primary"/>
-          <q-item-main label="Sair" sublabel="Login"/>
+        <q-item to="/" exact class="bottom">
+          <img src="~assets/arrow.svg">
         </q-item>
       </q-list>
     </q-layout-drawer>
@@ -90,6 +89,11 @@
         <q-route-tab
           icon="not_listed_location"
           to="/gMaps"
+          exact
+          slot="title"/>
+        <q-route-tab
+          icon="not_listed_location"
+          to="/mapa"
           exact
           slot="title"/>
         </q-tabs>
@@ -156,4 +160,11 @@ export default {
 </script>
 
 <style>
+.bottom {
+  position: absolute;
+  bottom: 5px;
+}
+.paddingTop {
+  margin-top: 20px;
+}
 </style>

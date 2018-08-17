@@ -18,7 +18,7 @@
     <q-btn
       class="fit"
       color="primary"
-      to="creditCart">
+      to="/checkout">
       Finalizar
     </q-btn>
     </div>
