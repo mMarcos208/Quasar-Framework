@@ -12,4 +12,4 @@
 
 - [PhoneGap Plugin BarcodeScanner](https://github.com/phonegap/phonegap-plugin-barcodescanner)
 
-Note: Configuração do cordova não adicionada no rastreamento, `npm install` não irá instalar todas as depêndências necessárias.
+Nota: Configuração do cordova não adicionada no rastreamento, `npm install` não irá instalar todas as depêndências necessárias.
